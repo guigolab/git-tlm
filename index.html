@@ -1,0 +1,380 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Git</title>
+
+		<link rel="stylesheet" href="reveal.js/css/reset.css">
+		<link rel="stylesheet" href="reveal.js/css/reveal.css">
+		<link rel="stylesheet" href="reveal.js/css/theme/crg.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="reveal.js/lib/css/zenburn.css">
+		
+		<link rel="stylesheet" href="css/fontawesome-all.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'reveal.js/css/print/pdf.css' : 'reveal.js/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<style>
+		img.title {
+			filter: invert(80%) saturate(30) hue-rotate(35deg);
+			box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.2)!important;
+			border-radius: 15px;
+		}
+
+		p.title {
+			font-size: 0.8em;
+			color: #555;
+			margin: 20px 0 0 0;
+		}
+		p.title span {
+			font-size: inherit;
+			color: #999;
+			margin: 0;
+			display: block;
+		}
+		</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<span>
+						<img class="title" width="50%" data-src="https://codereviewvideos.com/blog/wp-content/uploads/2015/06/git-goodness.gif"/>
+					</span>
+					<p class="title">
+						Technical Lab Meeting<br/>
+						<small>May 29, 2019</small>
+						<span><small>Emilio Palumbo</small></span>
+					</p>
+				</section>
+				<section data-background-color="#fff">
+					<p class="header-blue">an <strong>open source</strong>, <strong>distributed</strong>, version control system</p>
+					<!-- <span><i class="crg fas fa-angle-right"></i> most used thanks to its performance, security and flexibility</span> -->
+					<ul><li class="blue-tick">most used thanks to its performance, security and flexibility</li></ul>
+				</section>
+				<section>
+				<h3>Version Control</h3>
+				<img data-src="images/what-is-vcs.png" width="70%">
+				</section>
+				<section data-background-color="#000000" data-background-image="images/phd101212s.gif" data-background-size="contain">
+				</section>
+				<section data-background-color="#000000" data-background-image="images/phd052810s.gif" data-background-size="contain">
+				</section>
+				<section>
+					<ul class="capital">
+						<li>collaboration</li>
+						<li class="fragment">storing versions (<span class="crg">Properly</span>)</li>
+						<li class="fragment">restoring previous versions</li>
+						<li class="fragment">understanding what happened</li>
+						<li class="fragment">backup</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Distributed</h3>
+					<img data-src="images/basic-remote-workflow.png" width="60%">
+				</section>
+				<section>
+					<ul class="capital">
+						<li>repository replicas</li>
+						<li class="fragment">local operations</li>
+						<li class="fragment">workflow flexibility</li>
+					</ul>
+					</section>
+				<!-- <section data-background-color="#f5b041">
+					<h2>Git Concepts</h2>
+				</section> -->
+				<section data-background-color="#8bc3d7">
+					<h2>Git</h2>
+				</section>
+				<section>
+					<h3>Repository</h3>
+				</section>
+				<section>
+					<p class="header-red">stores versions and metadata</p>
+					<p>a simple hidden folder named <code style="font-weight: 500" class="red">.git</code> in the root directory</p>
+					<p><i class="fas fa-angle-right red"></i> <strong>should not touch</strong> anything inside this folder</p>
+				</section>					
+				<section>
+					<ul>
+						<li><span style="font-weight: 700;">local</span>: on your local computer as a <code style="font-weight: 500" class="red">.git</code> folder inside your project's root</li>
+						<li><span style="font-weight: 700;">remote</span>: typically located on a remote server. No actual working files associated (<span class="red">bare</span>)</li>
+					</ul>
+				</section>
+				<section>
+					<pre><code class="bash" data-trim data-noescape>
+						# Create a local repo
+						$ mkdir foo
+						$ cd foo
+						$ git init
+					</code></pre>					
+				</section>
+				<section>
+					<h3>Git configuration</h3>
+				</section>
+				<section>
+					<ul>
+						<li>system config, in <code style="font-weight: 500" class="red">$(prefix)/etc/.gitconfig</code></li>
+						<li class="fragment">global config, in <code style="font-weight: 500" class="red">~/.gitconfig</code></li>
+						<li class="fragment">repository config, <code style="font-weight: 500" class="red">.git/config</code> in your project root
+							<!-- <p><i class="fas fa-angle-right red"></i> valid only for your working copy</p> -->
+							<ul><li class="red-tick">valid only for your working copy</li></ul>
+						</li>
+					</ul>
+				</section>
+				<section>
+					<pre><code class="bash" data-trim data-noescape>
+						$ git config <strong style="font-size: 1.2em">--global</strong> user.name "John Doe"
+						$ git config <strong style="font-size: 1.2em">--global</strong> user.email "john@doe.org"
+					</code></pre>
+					<pre class="fragment"><code class="bash" data-trim data-noescape>
+						# local alias					
+						$ git config alias.st status
+					</code></pre>
+				</section>
+				<section>
+					<h3>Ignoring files</h3>
+				</section>
+				<section>
+					<p>create a <code style="font-weight: 500" class="red">.gitignore</code> file in your project's root folder</p>
+				</section>
+				<!-- <section>			
+					<ul>
+						<li>Ignore a specific file, e.g. <code style="font-weight: 500" class="red">path/to/file.ext</code></li> 
+						<li>Ignore all files with a certain name (anywhere in the project), e.g. <code style="font-weight: 500" class="red">file.ext</code></li>
+						<li>Ignore all files of a certain type (anywhere in the project), e.g. <code style="font-weight: 500" class="red">*.ext</code></li>
+						<li>Ignore all files in a certain folder, e.g. <code style="font-weight: 500" class="red">path/to/folder/*</code></li>
+					</ul>
+				</section> -->
+				<section>
+					<ul>
+						<li>Ignore a specific file
+							<p>e.g. <code style="font-weight: 500" class="red">path/to/file.ext</code></p>
+						</li>
+					</ul>
+				</section>
+				<section>
+					<ul>
+						<li>Ignore all files with a certain name (anywhere in the project)
+							<p>e.g. <code style="font-weight: 500" class="red">file.ext</code></p>
+						</li>
+					</ul>
+				</section>
+				<section>
+					<ul>
+						<li>Ignore all files of a certain type (anywhere in the project)
+							<p>e.g. <code style="font-weight: 500" class="red">*.ext</code></p>
+						</li>
+					</ul>
+				</section>
+				<section>
+					<ul>
+						<li>Ignore all files in a certain folder
+							<p>e.g. <code style="font-weight: 500" class="red">path/to/folder/*</code></p>
+						</li>
+					</ul>
+				</section>
+				<section>
+					<pre><code data-trim>
+						# R example .gitignore file
+
+						# History files
+						.Rhistory
+						.Rapp.history
+						
+						# Session Data files
+						.RData
+						
+						# User-specific files
+						.Ruserdata
+						
+						# Example code in package build process
+						*-Ex.R
+						
+						# Output files from R CMD build
+						/*.tar.gz
+						
+						# Output files from R CMD check
+						/*.Rcheck/
+						
+						# RStudio files
+						.Rproj.user/
+						
+						# produced vignettes
+						vignettes/*.html
+						vignettes/*.pdf
+						
+						# knitr and R markdown default cache directories
+						*_cache/
+						/cache/
+						
+						# Temporary files created by R markdown
+						*.utf8.md
+						*.knit.md
+					</code></pre>
+				</section>
+				<section>
+					<h3>File status</h3>
+				</section>
+				<section>
+					<ul>
+						<li><span style="font-weight: 700;">untracked</span>: not under version control, can be a newly created or ignored file</li>
+						<li><span style="font-weight: 700;">tracked</span>: watched for changes by Git</li>
+					</ul>
+				</section>				
+				<section>
+					<pre><code class="bash" data-trim>
+						git status
+					</code></pre>
+					<pre class="fragment"><code class="bash" data-trim>
+						# git status exclude ignored files by default
+						git status --ignored
+					</code></pre>
+				</section>
+				<section>
+					<pre><code class="bash" data-trim data-noescape>
+						<span class="fragment" data-fragment-index="1">$ touch README.md</span>
+						<span class="fragment" data-fragment-index="2"># the file is <strong>untracked</strong></span>
+						<span class="fragment" data-fragment-index="3">$ git add README.md</span>
+					</code></pre>
+					<pre class="fragment" data-fragment-index="2"><code class="bash" data-trim data-noescape>
+					$ git status
+					On branch master
+					Your branch is up to date with 'origin/master'.
+					
+					Untracked files:
+						(use "git add <file>..." to include in what will be committed)
+					
+							README.md
+					</code></pre>
+					<pre class="fragment" data-fragment-index="3"><code class="bash" data-trim data-noescape>
+					$ git status
+					On branch master
+					Your branch is up to date with 'origin/master'.
+
+					Changes to be committed:
+					(use "git reset HEAD <file>..." to unstage)
+
+							new file:   README.md
+					</code></pre>
+				</section>
+				<section>
+					<h3>Commit</h3>
+				</section>
+				<section>
+					<p class="header-red">a wrapper for a specific set of changes</p> 
+					<ul>
+						<li class="fragment">marks a specific version of your project</li>
+						<li class="fragment">changes commented in a short "commit message"</li>
+					</ul>
+				</section>
+				<section>
+					<pre><code class="bash" data-trim data-noescape>
+						$ git commit -m "Add readme"
+					</code></pre>
+				</section>
+				<section>
+					<h3>Branches</h3>
+				</section>
+				<section>
+					<p class="header-red">diverge from the main line of development and continue to do work without messing with it</p>
+					<ul>						
+						<li class="fragment">incredibly lightweight in Git, compared to othe VCS</li>
+						<li class="fragment">main branch is called <code class="red" style="font-size: 500;">master</code></li>
+					</ul>
+				</section>
+				<section>
+					<pre><code class="bash" data-trim data-noescape>
+						# show branch list
+						git branch
+					</code></pre>
+					<pre class="fragment"><code class="bash" data-trim data-noescape>
+						# create a new branch called dev from master
+						git branch dev
+						# work in that branch
+						git checkout dev
+					</code></pre>
+					<pre class="fragment"><code class="bash" data-trim data-noescape>
+						# equivalent oneliner
+						git checkout -b dev
+					</code></pre>
+				</section>
+				<section>
+					<h3>Remotes</h3>
+				</section>
+				<section>
+					<p class="header-red">a copy of the repository (the <code style="font-size: 500;" class="red">.git</code> folder)</p>
+					<ul>
+						<li class="fragment">multiple remotes supported</li>
+						<li class="fragment">different types
+						<ul>
+							<li class="red-tick"><code>http(s)://</code></li>
+							<li class="red-tick"><code>ssh://</code></li>
+							<li class="red-tick"><code>file://</code></li>
+						</ul>
+						</li>
+					</ul>
+				</section>
+				<section>
+					<pre><code class="bash" data-trim data-noescape>
+						# Create a repo to be used as remote (e.g. on a server)
+						$ mkdir foo.git
+						$ cd foo.git
+						$ git init --bare
+					</code></pre>
+					<pre class="fragment"><code class="bash" data-trim data-noescape>
+						# Add the remote to the local repo (ssh:// implicit)
+						$ git remote add <strong>origin</strong> me@server.org:foo
+					</code></pre>
+					<pre class="fragment"><code class="bash" data-trim data-noescape>
+						# Push changes
+						$ git push <strong>origin</strong> master
+					</code></pre>
+				</section>
+				<section>
+					<h3>References</h3>
+				</section>
+				<section>
+					<ul class="capital">
+						<li><a target="_blank" href="https://git-scm.com/docs">Official git documentation</a></li>						
+						<li><a target="_blank" href="https://rogerdudler.github.io/git-guide/">git - the simple guide</a></li>						
+						<li><a target="_blank" href="https://try.github.io/">GitHub - Resources to learn Git</a></li>						
+						<li><a target="_blank" href="https://www.atlassian.com/git">Atlassian - Getting git right</a></li>						
+					</ul>
+				</section>
+				<section data-background-color="#8bc3d7" class="thanks"><h1>Thanks!</h1></section>
+				<section data-background-image="images/fire.png" data-background-size="50%"></section>
+			</div>
+		</div>
+
+		<script src="reveal.js/js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				center: true,
+				slideNumber: "c/t",
+				hash: true,
+				history: false,
+				controls: false,
+				transition: 'none',
+				dependencies: [
+					{ src: 'reveal.js/plugin/markdown/marked.js' },
+					{ src: 'reveal.js/plugin/markdown/markdown.js' },
+					{ src: 'reveal.js/plugin/notes/notes.js', async: true },
+					{ src: 'reveal.js/plugin/highlight/highlight.js', async: true }
+				]
+			});
+		</script>
+	</body>
+</html>
